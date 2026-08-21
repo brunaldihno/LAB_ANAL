@@ -7,29 +7,26 @@ En este repositorio encontrarás los códigos, implementaciones y recursos desar
 ## 📚 Contenido
 
 * 💻 Códigos de las experiencias de laboratorio
-* 🔧 Implementaciones serparadas en la ESP32 y la FPGA Basys 3
-* 📊 Archivos y recursos utilizados en las prácticas
 
-## 👥 Grupo 23
+## 📁 Organización del código
 
-Repositorio correspondiente al trabajo práctico del **Grupo 23** en el laboratorio de **Electrónica Analógica Digital**.
-
-## 🚀 Organización
-
-Los archivos se encuentran organizados según las distintas actividades y experiencias realizadas durante el laboratorio.
+El código del laboratorio se encuentra organizado por experiencia, separando las implementaciones correspondientes a **ESP32** y **FPGA**:
 
 ```text
 Grupo23/
 ├── README.md
-├── Laboratorio_01/
-├── Laboratorio_02/
-├── Laboratorio_03/
+├── Exp1/
+│   ├── ESP32/
+│   └── FPGA/
+├── Exp2/
+│   ├── ESP32/
+│   └── FPGA/
+├── Exp3/
+│   ├── ESP32/
+│   └── FPGA/
 └── ...
 ```
 
-## 🤝 Trabajo colaborativo
----
+y no se olviden de los hola.txt
 
 **⚡ Grupo 23 — Electrónica Analógica Digital**
-
-*Aprendiendo, experimentando y construyendo juntos.*
