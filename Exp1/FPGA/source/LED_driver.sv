@@ -2,11 +2,15 @@
 
 module LED_driver (
     input  logic        clk,
+    input  logic        clk_LED,
+    input  logic        reset,
     input  logic [15:0] data,
     output logic [6:0]  segments,
     output logic        punto,
     output logic [3:0]  enables
 );
+
+    logic clk_prev;
 
     logic [1:0] state;
 
@@ -38,42 +42,62 @@ module LED_driver (
     endfunction
 
     always_ff @(posedge clk) begin
-
-        decena    <= data[15:12];
-        unidad    <= data[11:8];
-        decima    <= data[7:4];
-        centecima <= data[3:0];
-
-        case (state)
-
-            2'b00: begin
-                enables <= 4'b0111;
-                punto <= 1;
-                segments <= seg_decode(decena);
+    
+        if (reset) begin
+            state       <= 2'b00;
+            decena      <= 4'b0000;
+            unidad      <= 4'b0000;
+            decima      <= 4'b0000;
+            centecima   <= 4'b0000;
+            clk_prev    <= 1'b0;
+        end
+        
+        else begin
+    
+            if (clk_LED & ~clk_prev) begin
+    
+                decena    <= data[15:12];
+                unidad    <= data[11:8];
+                decima    <= data[7:4];
+                centecima <= data[3:0];
+        
+                case (state)
+        
+                    2'b00: begin
+                        enables <= 4'b0111;
+                        punto <= 1;
+                        segments <= seg_decode(decena);
+                    end
+        
+                    2'b01: begin
+                        enables <= 4'b1011;
+                        punto <= 0;
+                        segments <= seg_decode(unidad);
+                    end
+        
+                    2'b10: begin
+                        enables <= 4'b1101;
+                        punto <= 1;
+                        segments <= seg_decode(decima);
+                    end
+        
+                    2'b11: begin
+                        enables <= 4'b1110;
+                        punto <= 1;
+                        segments <= seg_decode(centecima);
+                    end
+        
+                endcase
+        
+                state <= state + 1'b1;
+                
+                clk_prev <= clk_LED;
+                
+                end
+            
+            else begin
+                clk_prev <= clk_LED;
             end
-
-            2'b01: begin
-                enables <= 4'b1011;
-                punto <= 0;
-                segments <= seg_decode(unidad);
-            end
-
-            2'b10: begin
-                enables <= 4'b1101;
-                punto <= 1;
-                segments <= seg_decode(decima);
-            end
-
-            2'b11: begin
-                enables <= 4'b1110;
-                punto <= 1;
-                segments <= seg_decode(centecima);
-            end
-
-        endcase
-
-        state <= state + 1'b1;
- 
+        end
     end
-
 endmodule

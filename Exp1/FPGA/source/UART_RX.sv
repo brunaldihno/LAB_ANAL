@@ -46,10 +46,18 @@ module UART_RX (
                 indice <= indice + 1;
             end
             else if (indice == 9) begin
-                data   <= curr_data;
-                ready  <= 1'b1;
-                active <= 1'b0;
-                indice <= 0;
+                if (RX) begin
+                    data   <= curr_data;
+                    ready  <= 1'b1;
+                    active <= 1'b0;
+                    indice <= 0;
+                end
+                else begin
+                    data   <= 8'b0;
+                    ready  <= 1'b0;
+                    active <= 1'b0;
+                    indice <= 0;
+                end
             end
         end
         else begin

@@ -3,7 +3,7 @@
 module UART_receiver (
     input  logic        clk,
     input  logic        reset,
-    input  logic        over,
+    input  logic        timeout,
     input  logic        new_data,
     input  logic [7:0]  data_in,
     output logic [15:0] data_out,
@@ -20,7 +20,7 @@ module UART_receiver (
             waiting <= 1'b0;
         end
         
-        else if (over) begin
+        else if (timeout) begin
             buffer  <= 8'b0;
             waiting <= 1'b0;
         end

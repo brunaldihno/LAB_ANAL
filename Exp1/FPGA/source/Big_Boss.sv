@@ -6,8 +6,7 @@ module Big_Boss (
 
     output logic [6:0]  segments,
     output logic        punto,
-    output logic [3:0]  enables,
-    output logic        debug_led
+    output logic [3:0]  enables
 );
 
     // ============================================================
@@ -30,7 +29,6 @@ module Big_Boss (
     // Procesador
     logic [15:0] processor_data_div;
     logic [15:0] processor_data_out;
-    logic        debug_led;
     
     // Divisores
     logic [3:0] decena;
@@ -63,7 +61,7 @@ module Big_Boss (
     ) C2 (
         .in_clk  (clk),
         .reset   (!receiver_waiting),
-        .out_clk (over)
+        .out_clk (timeout)
     );
     
     
@@ -94,7 +92,7 @@ module Big_Boss (
     UART_receiver U2 (
         .clk      (clk),
         .reset    (reset),
-        .over     (over),
+        .timeout  (timeout),
         .new_data (uart_ready),
         .data_in  (uart_data),
         .data_out (receiver_data),
@@ -119,8 +117,7 @@ module Big_Boss (
         .centecima   (centecima),
 
         .data_div    (processor_data_div),
-        .data_out    (processor_data_out),
-        .debug_led   (debug_led)
+        .data_out    (processor_data_out)
     );
 
 
@@ -178,7 +175,9 @@ module Big_Boss (
     // ============================================================
 
     LED_driver L1 (
-        .clk      (clk_LED),
+        .clk      (clk),
+        .clk_LED  (clk_LED),
+        .reset    (reset),
         .data     (processor_data_out),
         .segments (segments),
         .punto    (punto),

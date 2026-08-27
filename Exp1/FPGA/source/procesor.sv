@@ -11,8 +11,7 @@ module procesor (
     input  logic [3:0]  decima,
     input  logic [3:0]  centecima,
     output logic [15:0] data_div,
-    output logic [15:0] data_out,
-    output logic        debug_led
+    output logic [15:0] data_out
 );
 
     
@@ -42,10 +41,6 @@ module procesor (
         else begin
             if (&div_ready) begin
                 data_out <= {decena, unidad, decima, centecima};
-                debug_led <= 1;
-            end
-            else begin
-                debug_led <= 0;
             end
             case (state)
 
@@ -69,13 +64,13 @@ module procesor (
 
 
                 CALC_B: begin
-                    b <= a * 32'd2172;
+                    b <= a * 32'd34754;
                     state <= CALC_C;
                 end
 
 
                 CALC_C: begin
-                    c <= b >> 10;
+                    c <= b >> 14;
                     state <= CALC_D;
                 end
 
