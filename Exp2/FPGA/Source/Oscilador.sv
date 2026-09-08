@@ -33,10 +33,10 @@ module Oscilador(
     
     always_comb begin
         case (sw)
-            2'b00: incremento = 9423;
-            2'b01: incremento = 16855;
-            2'b10: incremento = 23816;
-            2'b11: incremento = 31811;
+            2'b00: incremento = 2418926;
+            2'b01: incremento = 4309976;
+            2'b10: incremento = 6095583;
+            2'b11: incremento = 8136166;
         endcase
     end
     
