@@ -5,7 +5,7 @@ module maestro(
     input logic reset,
     input logic [1:0] sw,
     input logic boton,
-    input logic [7:0] audio_externo,
+    //input logic [7:0] audio_externo,
     output logic pwm_out,
     output logic [3:0] enables,
     output logic [7:0] segments
@@ -31,7 +31,7 @@ module maestro(
     mux MUX(
         .boton(boton),
         .audio_prueba(audio_local),
-        .audio_real(audio_externo),
+        .audio_real(8'd0),
         .audio_salida(audio_seleccionado)
     );
     comparador COM(
