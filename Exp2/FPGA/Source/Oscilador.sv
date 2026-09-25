@@ -6,7 +6,7 @@
 // Create Date: 04.09.2026 06:31:37
 // Design Name: 
 // Module Name: Oscilador
-// Project Name: 
+// Project Name:
 // Target Devices: 
 // Tool Versions: 
 // Description: 
