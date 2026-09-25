@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Sierra
+module sierra
   #(parameter increment = 274877907)
   ( input logic clk,
     input logic reset,
