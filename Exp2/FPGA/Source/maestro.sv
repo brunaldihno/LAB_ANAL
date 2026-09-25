@@ -4,7 +4,7 @@ module maestro(
     input logic clk,
     input logic reset,
     input logic [1:0] sw,
-    input logic [1:0] boton,
+    input logic boton,
     input logic [7:0] audio_externo,
     output logic pwm_out,
     output logic [3:0] enables,
@@ -34,7 +34,7 @@ module maestro(
         .audio_real(audio_externo),
         .audio_salida(audio_seleccionado)
     );
-    comparator COM(
+    comparador COM(
         .audio(audio_seleccionado),
         .portadora(diente),
         .pwm_out(pwm_out) 

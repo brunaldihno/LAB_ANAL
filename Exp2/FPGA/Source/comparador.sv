@@ -25,5 +25,5 @@ module comparador(
     input logic [7:0] portadora,
     output logic pwm_out
     );
-    assigm pwm_out  = (audio>portadora) ? 1'b1 : 1'b0;
+    assign pwm_out  = (audio>portadora) ? 1'b1 : 1'b0;
 endmodule
