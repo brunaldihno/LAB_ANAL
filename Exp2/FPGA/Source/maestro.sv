@@ -4,13 +4,14 @@ module maestro(
     input logic clk,
     input logic reset,
     input logic [1:0] switch,
+    input logic [2:0] amps,
     input logic boton,
     input logic rx,
     output logic pwm_out,
     output logic [3:0] enables,
     output logic punto,
     output logic [6:0] segments,
-    output logic [6:0] debug_leds
+    output logic [5:0] debug_leds
     );
 
     logic [7:0] audio_externo;
@@ -31,6 +32,7 @@ module maestro(
     oscilador OSC(
         .clk(clk),
         .reset(reset),
+        .amp(amps),
         .switch(switch),
         .sine_out(audio_local)
     );
@@ -67,14 +69,6 @@ module maestro(
         .enables(enables)
     );
     
-    assign debug_leds[0] = 1'b1;
-    assign debug_leds[1] = 1'b1;
-    assign debug_leds[2] = 1'b1;
-    assign debug_leds[5] = 1'b1;
-    assign debug_leds[6] = 1'b1;
-
-    assign debug_leds[3] = rx;
-    
-    assign debug_leds[4] = ~rx;
+    assign debug_leds = 6'b111111;
 
 endmodule
