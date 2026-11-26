@@ -24,6 +24,8 @@
 
 // variables de frontend (web y lcd)
 
+LCD lcd;
+
 float front_temp = 20.0;
 float front_duty = 50.0;
 
@@ -190,7 +192,7 @@ void webTask(void *parameter) {
             timestamp
         );
 
-        lcd.sendData();
+        lcd.sendData(20.0, 30.0, 50.0);
 
         // =================================
         // ESPERAR SIGUIENTE CICLO
@@ -225,7 +227,7 @@ void setup() {
 
     web.begin();
 
-    //lcd.begin();
+    lcd.begin();
 
     // =================================
     // TAREA DE CONTROL
