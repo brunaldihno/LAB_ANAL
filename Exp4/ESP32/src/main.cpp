@@ -9,14 +9,6 @@
 #define PWM_PIN  25
 #define ADC_PIN  34
 
-#define LCD_D4_PIN  1
-#define LCD_D5_PIN  2
-#define LCD_D6_PIN  3
-#define LCD_D7_PIN  4
-#define LCD_EN_PIN  5
-#define LCD_RS_PIN  6
-#define LCD_RW_PIN  7
-
 #define CONTROL_FREQ 100
 #define WEB_FREQ     20
 
@@ -38,6 +30,9 @@ float front_duty = 50.0;
 float front_setpoint = 30.0;
 float front_Kp = 1.0;
 float front_Ki = 1.0;
+
+uint32_t tiempo = 0;
+float timestamp = 0.0;
 
 // variables de backend (controlador)
 
@@ -115,7 +110,7 @@ void controlTask(void *parameter) {
         // CONTROL PID
         // =================================
 
-        error = back_setpoint - back_filtered_temp;
+        error = back_filtered_temp - back_setpoint;
 
         integral += back_Ki * error * dt;
 
@@ -185,10 +180,20 @@ void webTask(void *parameter) {
 
         portEXIT_CRITICAL(&controlMux);
 
-        // Enviar información
-        web.sendData();
+        tiempo = millis();
+        timestamp =(float)tiempo / 1000.0f;
 
-        lcd.sendData();
+        // Enviar información
+        web.sendData(
+            front_setpoint,
+            front_Kp,
+            front_Ki,
+            front_temp,
+            front_duty,
+            timestamp
+        );
+
+        //lcd.sendData();
 
         // =================================
         // ESPERAR SIGUIENTE CICLO
@@ -208,7 +213,7 @@ void webTask(void *parameter) {
 void setup() {
 
     Serial.begin(115200);
-    
+
     // =================================
     // HARDWARE
     // =================================
@@ -223,7 +228,7 @@ void setup() {
 
     web.begin();
 
-    lcd.begin();
+    //lcd.begin();
 
     // =================================
     // TAREA DE CONTROL

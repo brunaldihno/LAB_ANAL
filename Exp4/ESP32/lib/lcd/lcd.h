@@ -27,5 +27,8 @@ public:
 };
 
 extern LCD lcd;
+extern float front_temp;
+extern float front_setpoint;
+extern float front_duty;
 
 #endif
