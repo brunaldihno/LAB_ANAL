@@ -39,6 +39,9 @@ float front_setpoint = 30.0;
 float front_Kp = 1.0;
 float front_Ki = 1.0;
 
+uint32_t tiempo = 0;
+float timestamp = 0.0;
+
 // variables de backend (controlador)
 
 float back_setpoint = 30.0;
@@ -115,7 +118,7 @@ void controlTask(void *parameter) {
         // CONTROL PID
         // =================================
 
-        error = back_setpoint - back_filtered_temp;
+        error = back_filtered_temp - back_setpoint;
 
         integral += back_Ki * error * dt;
 
@@ -185,10 +188,20 @@ void webTask(void *parameter) {
 
         portEXIT_CRITICAL(&controlMux);
 
-        // Enviar información
-        web.sendData();
+        tiempo = millis();
+        timestamp =(float)tiempo / 1000.0f;
 
-        lcd.sendData();
+        // Enviar información
+        web.sendData(
+            front_setpoint,
+            front_Kp,
+            front_Ki,
+            front_temp,
+            front_duty,
+            timestamp
+        );
+
+        //lcd.sendData();
 
         // =================================
         // ESPERAR SIGUIENTE CICLO
@@ -208,7 +221,7 @@ void webTask(void *parameter) {
 void setup() {
 
     Serial.begin(115200);
-    
+
     // =================================
     // HARDWARE
     // =================================
@@ -223,7 +236,7 @@ void setup() {
 
     web.begin();
 
-    lcd.begin();
+    //lcd.begin();
 
     // =================================
     // TAREA DE CONTROL
