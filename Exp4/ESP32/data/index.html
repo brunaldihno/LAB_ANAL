@@ -1,64 +1,142 @@
+
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1">
+    <title>ESP32 Control</title>
 
-    <title>ESP32 Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 
-    <link rel="stylesheet" href="/style.css">
+    <!-- Chart.js almacenado localmente en LittleFS -->
+    <script src="chart.js"></script>
 </head>
 
 <body>
 
-    <h1>ESP32 DASHBOARD</h1>
-
-    <h3 id="connection">Conectando...</h3>
-
-    <section class="card">
-
-        <h2>Temperatura</h2>
-
-        <div class="value">
-            <span id="temperature">--</span> °C
+    <header>
+        <h1>ESP32 Control</h1>
+        <div id="connectionStatus" class="status disconnected">
+            Desconectado
         </div>
+    </header>
 
-    </section>
+    <main>
 
-    <section class="card">
+        <!-- INPUTS -->
+        <section>
+            <h2>Parámetros de control</h2>
 
-        <h2>Setpoint</h2>
+            <div class="input-grid">
 
-        <input type="number"
-               id="setpoint"
-               step="0.1">
+                <!-- SETPOINT -->
+                <div class="panel">
+                    <h3>Setpoint</h3>
 
-        <button onclick="writeSetpoint()">
-            ACTUALIZAR
-        </button>
+                    <div class="showbox">
+                        <span id="setpointValue">0.00</span>
+                    </div>
 
-    </section>
+                    <div class="input-control">
+                        <input
+                            type="number"
+                            id="setpointInput"
+                            step="any"
+                            placeholder="Nuevo setpoint">
 
-    <section class="card">
+                        <button onclick="saveParameter('SETPOINT')">
+                            Guardar
+                        </button>
+                    </div>
+                </div>
 
-        <h2>Control LED</h2>
+                <!-- KP -->
+                <div class="panel">
+                    <h3>Kp</h3>
 
-        <div id="ledStatus">--</div>
+                    <div class="showbox">
+                        <span id="kpValue">0.00</span>
+                    </div>
 
-        <button onclick="setLed(1)">
-            ENCENDER
-        </button>
+                    <div class="input-control">
+                        <input
+                            type="number"
+                            id="kpInput"
+                            step="any"
+                            placeholder="Nuevo Kp">
 
-        <button onclick="setLed(0)">
-            APAGAR
-        </button>
+                        <button onclick="saveParameter('KP')">
+                            Guardar
+                        </button>
+                    </div>
+                </div>
 
-    </section>
+                <!-- KI -->
+                <div class="panel">
+                    <h3>Ki</h3>
 
-    <script src="/script.js"></script>
+                    <div class="showbox">
+                        <span id="kiValue">0.00</span>
+                    </div>
+
+                    <div class="input-control">
+                        <input
+                            type="number"
+                            id="kiInput"
+                            step="any"
+                            placeholder="Nuevo Ki">
+
+                        <button onclick="saveParameter('KI')">
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- OUTPUTS -->
+        <section>
+            <h2>Variables del sistema</h2>
+
+            <div class="output-grid">
+
+                <!-- TEMPERATURA -->
+                <div class="panel output-panel">
+                    <h3>Temperatura</h3>
+
+                    <div class="showbox">
+                        <span id="temperatureValue">0.00</span>
+                        <span class="unit">°C</span>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="temperatureChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- DUTY -->
+                <div class="panel output-panel">
+                    <h3>Duty</h3>
+
+                    <div class="showbox">
+                        <span id="dutyValue">0.00</span>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="dutyChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
 
 </body>
 </html>
