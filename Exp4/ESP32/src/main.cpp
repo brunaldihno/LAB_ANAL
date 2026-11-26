@@ -208,7 +208,7 @@ void webTask(void *parameter) {
 void setup() {
 
     Serial.begin(115200);
-
+    
     // =================================
     // HARDWARE
     // =================================

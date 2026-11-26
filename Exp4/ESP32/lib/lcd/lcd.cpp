@@ -1,18 +1,26 @@
 #include "lcd.h"
 
-LCD::LCD() {
-    contador = 0;
+
+float front_temp = 0;
+float front_setpoint = 0;
+float front_duty = 0;
+
+void escribir(const char *texto) {
+  while (*texto) {
+    lcd_dat(*texto);
+    texto++;
+  }
 }
 
-void LCD::iniciar() {
-    Serial.println("MiControlador iniciado");
+void setup() {
+  lcd_init();
+
+  lcd_cmd(0x80);          
+  escribir("AAA");    
+
+  lcd_cmd(0xC0);              
+  escribir("HOLAA");
 }
 
-void LCD::saludar() {
-    Serial.println("Hola desde mi libreria!");
-    contador++;
-}
-
-int LCD::sumar(int a, int b) {
-    return a + b;
+void loop() {
 }
