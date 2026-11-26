@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>ESP32 Dashboard</title>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+    <h1>ESP32 DASHBOARD</h1>
+
+    <h3 id="connection">Conectando...</h3>
+
+    <section class="card">
+
+        <h2>Temperatura</h2>
+
+        <div class="value">
+            <span id="temperature">--</span> °C
+        </div>
+
+    </section>
+
+    <section class="card">
+
+        <h2>Setpoint</h2>
+
+        <input type="number"
+               id="setpoint"
+               step="0.1">
+
+        <button onclick="writeSetpoint()">
+            ACTUALIZAR
+        </button>
+
+    </section>
+
+    <section class="card">
+
+        <h2>Control LED</h2>
+
+        <div id="ledStatus">--</div>
+
+        <button onclick="setLed(1)">
+            ENCENDER
+        </button>
+
+        <button onclick="setLed(0)">
+            APAGAR
+        </button>
+
+    </section>
+
+    <script src="/script.js"></script>
+
+</body>
+</html>
