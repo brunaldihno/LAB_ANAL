@@ -4,6 +4,8 @@
 #include <Arduino.h>
 
 
+
+
 #define LCD_RS_PIN  21 
 #define LCD_RW_PIN  26
 #define LCD_EN_PIN  22
@@ -23,12 +25,7 @@ void lcd_dat(uint8_t dat);
 class LCD {
 public:
   void begin();
-  void sendData();
+  void sendData(float sp, float tp, float dy);
 };
-
-extern LCD lcd;
-extern float front_temp;
-extern float front_setpoint;
-extern float front_duty;
 
 #endif

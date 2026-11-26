@@ -34,6 +34,8 @@ float front_Ki = 1.0;
 uint32_t tiempo = 0;
 float timestamp = 0.0;
 
+LCD lcd;
+
 // variables de backend (controlador)
 
 float back_setpoint = 30.0;
@@ -193,7 +195,7 @@ void webTask(void *parameter) {
             timestamp
         );
 
-        //lcd.sendData();
+        lcd.sendData(30.3, 20.6, 16.6);
 
         // =================================
         // ESPERAR SIGUIENTE CICLO
@@ -228,7 +230,7 @@ void setup() {
 
     web.begin();
 
-    //lcd.begin();
+    lcd.begin();
 
     // =================================
     // TAREA DE CONTROL
