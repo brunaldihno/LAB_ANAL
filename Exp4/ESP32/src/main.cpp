@@ -18,6 +18,7 @@
 
 #define DUTY_2_PWM 2.55
 
+
 // =====================================
 // VARIABLES
 // =====================================
@@ -33,6 +34,8 @@ float front_setpoint = 30.0;
 float front_Kp = 1.0;
 float front_Ki = 1.0;
 
+float timestamp = 0.0;
+uint32_t tiempo = 0;
 // variables de backend (controlador)
 
 float back_setpoint = 30.0;
@@ -192,7 +195,7 @@ void webTask(void *parameter) {
             timestamp
         );
 
-        lcd.sendData(20.0, 30.0, 50.0);
+        lcd.sendData(front_setpoint, front_temp, front_duty);
 
         // =================================
         // ESPERAR SIGUIENTE CICLO

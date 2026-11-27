@@ -26,6 +26,10 @@ class LCD {
 public:
   void begin();
   void sendData(float sp, float tp, float dy);
+private:
+  void SplitFloat(float f, char* out);
+  void SplitFloat_mW(float f, char* out);
+  float Interpolar(const float* xs, const float* ys, int n, float data);
 };
 
 #endif

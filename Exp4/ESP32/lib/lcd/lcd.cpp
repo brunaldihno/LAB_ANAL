@@ -3,13 +3,6 @@
 // Usa el mismo lcd.h de siempre y no necesita ninguna variable del main.
 
 #include "lcd.h"
-
-// =====================================
-// TEXTO A MOSTRAR (máximo 16 caracteres por línea, sin tildes ni ñ)
-// =====================================
-#define TEXTO_LINEA_1  "AAAA!"
-#define TEXTO_LINEA_2  "AAAAAA"
-
 // =====================================
 // PROTOCOLO 4 BITS
 // =====================================
@@ -22,7 +15,7 @@ static void lcd_pulse() {
   delayMicroseconds(1);
   digitalWrite(LCD_EN_PIN, LOW);
   delayMicroseconds(100);
-}
+} 
 
 // Pone 4 bits en D4..D7 y da el pulso
 static void lcd_write4(uint8_t value) {
@@ -93,15 +86,82 @@ static void lcd_writeText(const char* text) {
 // Inicializa y escribe el texto de prueba UNA vez
 void LCD::begin() {
   lcd_init();
+};
 
-  lcd_cmd(0x80);                 // inicio de la línea 1
-  lcd_writeText(TEXTO_LINEA_1);
+float LCD::Interpolar(const float* xs, const float* ys, int n, float data){
+  if (data <= xs[0])     return ys[0];
+  if (data >= xs[n - 1]) return ys[n - 1];
 
-  lcd_cmd(0xC0);                 // inicio de la línea 2
-  lcd_writeText(TEXTO_LINEA_2);
-}
+  for (int i = 0; i < n - 1; i++) {
+    if (data < xs[i + 1]) {
+      float m = (ys[i + 1] - ys[i]) / (xs[i + 1] - xs[i]);
+      return ys[i] + (data - xs[i]) * m;
+    };
+    }; 
+    return 0;
+  };
 
-// En la prueba no hace nada: el texto ya quedó escrito en begin()
+const float X[] = {0, 25, 50, 75, 100};
+const float Y[] = {0, 216, 372, 456, 502};
+
+
+
+void LCD::SplitFloat(float f, char* out) {
+  if (f < 0)    f = 0;       // limitar al rango que se puede mostrar
+  if (f > 99.9) f = 99.9;
+
+  int n = (int)(f * 10 + 0.5f);   // 23.7 -> 237, y evita el error 23.6999
+
+  int decena  = n / 100;          // 2
+  int unidad  = (n / 10) % 10;    // 3
+  int decimal = n % 10;           // 7
+
+  out[0] = '0' + decena;
+  out[1] = '0' + unidad;
+  out[2] = '.';
+  out[3] = '0' + decimal;
+  out[4] = '\0';
+};
+
+
+void LCD::SplitFloat_mW (float f, char* out) {
+  if (f < 0)    f = 0;       // limitar al rango que se puede mostrar
+  if (f > 99.9) f = 99.9;
+
+  int n = (int)(f * 10 + 0.5f);   // 23.7 -> 237, y evita el error 23.6999
+
+  int decena  = n / 100;          // 2
+  int unidad  = (n / 10) % 10;    // 3
+  int decimal = n % 10;           // 7
+
+  out[0] = '0' + decena;
+  out[1] = '0' + unidad;
+  out[2] = '0' + decimal;
+  out[3] = '\0';
+};
+
+
 void LCD::sendData(float sp, float tp, float dy){
+
+  char sp_str[5];
+  char tp_str[5];
+  char dy_str[4];
+  float valor = Interpolar(X, Y, 5, dy);
+  SplitFloat(sp, sp_str);
+  SplitFloat(tp, tp_str);
+  SplitFloat_mW(valor/10, dy_str);
+
+  lcd_cmd(0x80);
+  lcd_writeText("T:");
+  lcd_writeText(tp_str);
+  lcd_writeText("C  R:");
+  lcd_writeText(sp_str);
+  lcd_writeText("C");
+
+
+  lcd_cmd(0xC0);
+  lcd_writeText("P:");
+  lcd_writeText(dy_str);
+  lcd_writeText("mW");
 
 }
